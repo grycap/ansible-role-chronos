@@ -1,0 +1,10 @@
+    - name: Install chronos package in Debian systems
+      apt: pkg=chronos state=present update_cache=yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install chronos package in RedHat systems
+      yum: name=chronos state=present update_cache=yes
+      when: ansible_os_family == "RedHat"
+
+    - name: start chronos
+      service: name=chronos state=started enabled=yes
