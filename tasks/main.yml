@@ -1,30 +1,26 @@
 - name: Include "{{ansible_os_family}}" marathon recipe
   include: "{{ansible_os_family}}.yml"
 
-- block:
-  - name: Create marathon conf folder
-    file: path=/etc/marathon/conf state=directory mode=0755
+- name: Create marathon conf folder
+  file: path=/etc/chronos/conf state=directory mode=0755
 
-  - name: Set Chronos principal
-    copy:
-      content: "{{principal}}"
-      dest: /etc/chronos/conf/mesos_authentication_principal
-      mode: 0600
+- name: Set Chronos principal
+  copy:
+    content: "{{principal}}"
+    dest: /etc/chronos/conf/mesos_authentication_principal
+    mode: 0600
 
-  - name: Set Chronos credentials
-    copy:
-      content: "/tmp/chronos-secret"
-      dest: /etc/chronos/conf/mesos_authentication_secret_file
-      mode: 0600
+- name: Set Chronos credentials
+  copy:
+    content: "/tmp/chronos-secret"
+    dest: /etc/chronos/conf/mesos_authentication_secret_file
+    mode: 0600
 
-  - name: Set Chronos credentials
-    copy:
-      content: "{{secret}}"
-      dest: /tmp/chronos-secret
-      mode: 0600
-
-  tags:
-    - authentication
+- name: Set Chronos credentials
+  copy:
+    content: "{{secret}}"
+    dest: /tmp/chronos-secret
+    mode: 0600
 
 - name: start chronos
   service: name=chronos state=started enabled=yes
