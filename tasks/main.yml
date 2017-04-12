@@ -1,26 +1,49 @@
-- name: Include "{{ansible_os_family}}" marathon recipe
-  include: "{{ansible_os_family}}.yml"
+- block:
+  - name: Include "{{ansible_os_family}}" chronos recipe
+    include: "{{ansible_os_family}}.yml"
 
-- name: Create marathon conf folder
-  file: path=/etc/chronos/conf state=directory mode=0755
+  - name: Create chronos conf folder
+    file: path=/etc/chronos/conf state=directory mode=0755
 
-- name: Set Chronos principal
-  copy:
-    content: "{{principal}}"
-    dest: /etc/chronos/conf/mesos_authentication_principal
-    mode: 0600
+  - name: Set Chronos principal
+    copy:
+      content: "{{principal}}"
+      dest: /etc/chronos/conf/mesos_authentication_principal
+      mode: 0600
 
-- name: Set Chronos credentials
-  copy:
-    content: "/tmp/chronos-secret"
-    dest: /etc/chronos/conf/mesos_authentication_secret_file
-    mode: 0600
+  - name: Set Chronos credentials
+    copy:
+      content: "{{secret}}"
+      dest: /tmp/chronos-secret
+      mode: 0600
 
-- name: Set Chronos credentials
-  copy:
-    content: "{{secret}}"
-    dest: /tmp/chronos-secret
-    mode: 0600
+  - name: Set Chronos credentials
+    copy:
+      content: "/tmp/chronos-secret"
+      dest: /etc/chronos/conf/mesos_authentication_secret_file
+      mode: 0600
 
-- name: start chronos
-  service: name=chronos state=started enabled=yes
+  - name: start chronos
+    service: name=chronos state=started enabled=yes
+  when: ansible_distribution_major_version != "16"
+
+- block:
+  - set_fact: chronosenv_template=chronos-env.j2
+  - set_fact: chronos_protocol=http
+
+  - name: Create chronos container env file
+    template:
+      src: {{chronosenv_template}}
+      dest: /etc/chronos/.chronosenv
+
+  - name: Run chronos container
+    docker_container:
+      name: chronos
+      image: "{{ chronos_image }}"
+      state: started
+      detach: true
+      restart_policy: always
+      network_mode: host
+      env_file: /etc/chronos/.chronosenv
+  tags: chronos
+  when: ansible_os_family == "Debian" and ansible_distribution_major_version == "16"

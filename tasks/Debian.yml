@@ -23,25 +23,3 @@
     apt: pkg=chronos state=present update_cache=yes
 
   when: ansible_distribution_major_version == "14"
-
-# Chronos package doesn't exist in ubuntu 16
-# We have to install it manually
-- block:
-  - name: Create chronos directory
-    file:
-      path: /opt/chronos
-      state: directory
-
-  - name: Copy chronos lib
-    copy:
-      dest: /opt/chronos/chronos-3.0.3.jar
-      src: ub16/chronos-3.0.3.jar
-      mode: 0644
-      force: no
-
-  - name: Run Chronos
-    command: java -cp chronos-3.0.3.jar org.apache.mesos.chronos.scheduler.Main --master zk://localhost:2181/mesos --zk_hosts localhost:2181
-    args:
-      chdir: /opt/chronos
-
-  when: ansible_distribution_major_version == "16"

@@ -1,3 +1,16 @@
 ---
 principal: ubuntu
 secret: ubuntusecret
+
+# Variables needed for container deployment
+zookeeper_client_port: "2181"
+zookeeper_peers_nodes: "{{ ansible_default_ipv4.address }}:{{zookeeper_client_port}}"
+
+chronos_libprocess_ip: "{{ ansible_default_ipv4.address }}"
+chronos_hostname: "{{ ansible_hostname }}"
+chronos_http_port: '4400'
+chronos_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
+chronos_zk_peers: "zk://{{ zookeeper_peers_nodes }}"
+chronos_framework_name: "chronos"
+chronos_version: 3.0.2
+chronos_image: "indigodatacloud/chronos:{{ chronos_version }}"
