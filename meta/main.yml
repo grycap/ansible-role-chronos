@@ -16,6 +16,6 @@ galaxy_info:
    - chronos
    - mesos
 
-dependencies: []
+dependencies:
   - { role: 'grycap.docker' }
    #- { role: 'grycap.mesos', mesos_install_mode: "front"}
