@@ -25,6 +25,7 @@
 
   - name: start chronos
     service: name=chronos state=started enabled=yes
+
   when: ansible_distribution_major_version != "16"
 
 - block:
@@ -45,5 +46,5 @@
       restart_policy: always
       network_mode: host
       env_file: /etc/chronos/.chronosenv
-  tags: chronos
+
   when: ansible_os_family == "Debian" and ansible_distribution_major_version == "16"
