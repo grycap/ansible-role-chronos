@@ -34,7 +34,7 @@
 
   - name: Create chronos container env file
     template:
-      src: {{chronosenv_template}}
+      src: chronos-env.j2
       dest: /etc/chronos/.chronosenv
 
   - name: Run chronos container
