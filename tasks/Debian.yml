@@ -37,6 +37,7 @@
 
   - name: Install docker container dependencies
     pip:
+      executable: /usr/bin/pip
       name: docker-py
 
   when: ansible_distribution_major_version == "16"
