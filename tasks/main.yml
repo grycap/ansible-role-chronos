@@ -1,7 +1,7 @@
-- block:
-  - name: Include "{{ansible_os_family}}" chronos recipe
-    include: "{{ansible_os_family}}.yml"
+- name: Include "{{ansible_os_family}}" chronos recipe
+  include: "{{ansible_os_family}}.yml"
 
+- block:
   - name: Create chronos conf folder
     file: path=/etc/chronos/conf state=directory mode=0755
 
