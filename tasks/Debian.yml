@@ -23,3 +23,20 @@
     apt: pkg=chronos state=present update_cache=yes
 
   when: ansible_distribution_major_version == "14"
+
+- block:
+  - name: Create chronos directory
+    file:
+      path: /etc/chronos
+      state: directory
+
+  - name: Create chronos container env file
+    template:
+      src: chronos-env.j2
+      dest: /etc/chronos/.chronosenv
+
+  - name: Install docker container dependencies
+    pip:
+      name: docker-py
+
+  when: ansible_distribution_major_version == "16"

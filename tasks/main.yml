@@ -29,16 +29,6 @@
   when: ansible_distribution_major_version != "16"
 
 - block:
-  - name: Create chronos directory
-    file:
-      path: /etc/chronos
-      state: directory
-
-  - name: Create chronos container env file
-    template:
-      src: chronos-env.j2
-      dest: /etc/chronos/.chronosenv
-
   - name: Run chronos container
     docker_container:
       name: chronos
