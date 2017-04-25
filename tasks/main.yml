@@ -29,7 +29,10 @@
   when: ansible_distribution_major_version != "16"
 
 - block:
-  - set_fact: chronos_protocol=http
+  - name: Create chronos directory
+    file:
+      path: /etc/chronos
+      state: directory
 
   - name: Create chronos container env file
     template:
