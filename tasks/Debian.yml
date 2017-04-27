@@ -1,30 +1,30 @@
 ---
-- block:
-  - name: Add key for Mesosphere repository for Debian systems
-    apt_key:
-      keyserver: keyserver.ubuntu.com
-      id: E56151BF
+#- block:
+#  - name: Add key for Mesosphere repository for Debian systems
+#    apt_key:
+#      keyserver: keyserver.ubuntu.com
+#      id: E56151BF
 
-  - name: Determine Linux distribution distributor
-    shell: lsb_release -is | tr '[:upper:]' '[:lower:]'
-    register: release_distributor
+#  - name: Determine Linux distribution distributor
+#    shell: lsb_release -is | tr '[:upper:]' '[:lower:]'
+#    register: release_distributor
 
-  - name: Determine Linux distribution codename
-    command: lsb_release -cs
-    register: release_codename
+#  - name: Determine Linux distribution codename
+#    command: lsb_release -cs
+#    register: release_codename
 
-  - name: Add Mesosphere repository to sources list
-    copy:
-      content: "deb http://repos.mesosphere.io/{{release_distributor.stdout}} {{release_codename.stdout}} main"
-      dest: /etc/apt/sources.list.d/mesosphere.list
-      mode: 0644
+#  - name: Add Mesosphere repository to sources list
+#    copy:
+#      content: "deb http://repos.mesosphere.io/{{release_distributor.stdout}} {{release_codename.stdout}} main"
+#      dest: /etc/apt/sources.list.d/mesosphere.list
+#      mode: 0644
 
-  - name: Install chronos package in Debian systems
-    apt: pkg=chronos state=present update_cache=yes
+#  - name: Install chronos package in Debian systems
+#    apt: pkg=chronos state=present update_cache=yes
 
-  when: ansible_distribution_major_version == "14"
+#  when: ansible_distribution_major_version == "14"
 
-- block:
+#- block:
   - name: Create chronos directory
     file:
       path: /etc/chronos
@@ -40,4 +40,4 @@
       executable: /usr/bin/pip
       name: docker-py
 
-  when: ansible_distribution_major_version == "16"
+#  when: ansible_distribution_major_version == "16"
