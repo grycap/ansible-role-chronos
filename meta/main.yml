@@ -3,20 +3,19 @@ galaxy_info:
   description: Install Chronos
   company: GRyCAP UPV
   license: Apache
-  min_ansible_version: 2.0
+  min_ansible_version: 2.2
   platforms:
   - name: Ubuntu
     versions:
     - trusty
+    - xenial
   - name: EL
     versions:
     - 7
-  galaxy_tags: 
+  galaxy_tags:
    - chronos
    - mesos
 
-dependencies: []
-   #- { role: 'grycap.docker' }
+dependencies:
+  - { role: 'grycap.docker' }
    #- { role: 'grycap.mesos', mesos_install_mode: "front"}
-
-
