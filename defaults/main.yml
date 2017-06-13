@@ -12,8 +12,7 @@ chronos_http_port: '4400'
 chronos_master_peers: "zk://{{ zookeeper_peers_nodes }}/mesos"
 chronos_zk_peers: "zk://{{ zookeeper_peers_nodes }}"
 chronos_framework_name: "chronos"
-chronos_version: 2.4.0
-chronos_image: "indigodatacloud/chronos:{{ chronos_version }}"
+chronos_image: "eubrabigsea/chronos"
 
 chronos_username: "admin"
 chronos_password: "s3cret!"
