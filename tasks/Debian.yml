@@ -9,13 +9,3 @@
     src: chronos-env.j2
     dest: /etc/chronos/.chronosenv
 
-- name: Install pip if needed
-  apt:
-    pkg: python-pip
-    state: present
-    update_cache: yes
-
-- name: Install docker container dependencies
-  pip:
-    executable: /usr/bin/pip
-    name: docker-py
