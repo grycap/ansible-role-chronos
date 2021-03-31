@@ -48,9 +48,5 @@ jobs:
       - name: Basic role check in front
         run: sudo ansible-playbook tests/test.yml -i tests/inventory
 
-      - name: logs
-        run: sleep 20 ; sudo docker logs chronos
-
       - name: Test chronos
         run: sleep 10 ; curl -u "admin:s3cret!" -L -X GET http://localhost:4400/scheduler/jobs
-

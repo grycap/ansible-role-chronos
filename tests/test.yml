@@ -1,4 +1,6 @@
 ---
 - hosts: localhost
   roles:
+    - grycap.mesos
     - ansible-role-chronos
+
