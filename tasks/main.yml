@@ -1,42 +1,21 @@
-- name: Include "{{ansible_os_family}}" chronos recipe
-  include: "{{ansible_os_family}}.yml"
+---
+- name: Create chronos directory
+  file:
+    path: /etc/chronos
+    state: directory
 
-- block:
-  - name: Create chronos conf folder
-    file: path=/etc/chronos/conf state=directory mode=0755
+- name: Create chronos container env file
+  template:
+    src: chronos-env.j2
+    dest: /etc/chronos/.chronosenv
 
-  - name: Set Chronos principal
-    copy:
-      content: "{{principal}}"
-      dest: /etc/chronos/conf/mesos_authentication_principal
-      mode: 0600
+- name: Run chronos container
+  docker_container:
+    name: chronos
+    image: "{{ chronos_image }}"
+    state: started
+    detach: true
+    restart_policy: always
+    network_mode: host
+    env_file: /etc/chronos/.chronosenv
 
-  - name: Set Chronos credentials
-    copy:
-      content: "{{secret}}"
-      dest: /tmp/chronos-secret
-      mode: 0600
-
-  - name: Set Chronos credentials
-    copy:
-      content: "/tmp/chronos-secret"
-      dest: /etc/chronos/conf/mesos_authentication_secret_file
-      mode: 0600
-
-  - name: start chronos
-    service: name=chronos state=started enabled=yes
-
-    when: ansible_os_family != "Debian"
-
-- block:
-  - name: Run chronos container
-    docker_container:
-      name: chronos
-      image: "{{ chronos_image }}"
-      state: started
-      detach: true
-      restart_policy: always
-      network_mode: host
-      env_file: /etc/chronos/.chronosenv
-
-  when: ansible_os_family == "Debian"

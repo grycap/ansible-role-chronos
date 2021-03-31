@@ -1,4 +1,6 @@
 ---
 - hosts: localhost
   roles:
-    - role_under_test
+    - grycap.mesos
+    - ansible-role-chronos
+
