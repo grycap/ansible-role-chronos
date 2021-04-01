@@ -1,6 +1,6 @@
 ---
-principal: ubuntu
-secret: ubuntusecret
+mesos_principal: ubuntu
+mesos_secret: ubuntusecret
 
 # Variables needed for container deployment
 zookeeper_client_port: "2181"
